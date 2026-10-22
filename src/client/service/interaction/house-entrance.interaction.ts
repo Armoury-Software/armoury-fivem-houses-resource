@@ -1,23 +1,23 @@
 import { EVENT_DIRECTIONS, EventListener, UI } from '@armoury/fivem-framework-client';
-import { House } from '@armoury/fivem-roleplay-gamemode-client';
+import { House, type Stub } from '@armoury/fivem-roleplay-gamemode-client';
 import { Injectable } from 'injection-js';
 
 @Injectable()
 export class HouseEntranceInteractionService {
-  private _hovered = new Map<number, House /* TODO: Use Stub<House> instead */>();
+  private _hovered = new Map<number, Stub<House>>();
 
   @EventListener({ eventName: 'armoury:safe:house:entrance:hover', direction: EVENT_DIRECTIONS.SERVER_TO_CLIENT })
-  public _onHouseEntranceHover(house: House /* TODO: Use Stub<House> instead */) {
-    if (this._hovered.has(house.id)) {
+  public _onHouseEntranceHover(house: Stub<House>) {
+    if (this._hovered.has(house.id!)) {
       return;
     }
 
     UI.sendMessage({
       type: MESSAGE_TYPE_ENTRANCE_HOVER,
-      house,
+      ...house,
     });
 
-    this._hovered.set(house.id, house);
+    this._hovered.set(house.id!, house);
   }
 
   @EventListener({ eventName: 'armoury:safe:house:entrance:unhover', direction: EVENT_DIRECTIONS.SERVER_TO_CLIENT })

@@ -1,4 +1,5 @@
 import { EventListener } from '@armoury/fivem-framework-server';
+import { House } from '@armoury/fivem-roleplay-gamemode-server';
 import { Injectable } from 'injection-js';
 
 import { HouseService } from '../house.service';
@@ -12,13 +13,7 @@ export class HouseEntranceInteractionService {
     const house = this._houses.findByPickupId(pickupId);
     if (house != null) {
       Cfx.emit('armoury:safe:house:entrance:hover', playerId, house);
-      Cfx.emitNet('armoury:safe:house:entrance:hover', playerId, {
-        // TODO: Replace this manually constructed object with "House.toStub()". Preferably, have a Stub<House> which House inherits. This would be added in the gamemode framework.
-        id: house.id,
-        rentPrice: house.rentPrice,
-        requiredLevel: house.requiredLevel,
-        sellingPrice: house.sellingPrice,
-      });
+      Cfx.emitNet('armoury:safe:house:entrance:hover', playerId, House.toStub(house));
     }
   }
 
